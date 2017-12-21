@@ -1,0 +1,19 @@
+server:
+  port: 8080
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2
+  datasource:
+    url: jdbc:h2:~/test
+    username: test
+    password: test
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+security:
+  basic:
+    enabled: false
+

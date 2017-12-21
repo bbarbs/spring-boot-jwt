@@ -1,0 +1,47 @@
+buildscript {
+	ext {
+		springBootVersion = '1.5.9.RELEASE'
+		springFoxVersion = '2.7.0'
+		javaxInjectVersion = '1'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+group = 'com.auth'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+
+repositories {
+	mavenCentral()
+}
+
+
+dependencies {
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+	compile('org.springframework.boot:spring-boot-starter-aop')
+	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile('org.springframework.boot:spring-boot-starter-web')
+	runtime('com.h2database:h2')
+
+	// Inject annotation.
+	compile("javax.inject:javax.inject:${javaxInjectVersion}")
+
+	// Swagger dependencies.
+	compile("io.springfox:springfox-swagger2:${springFoxVersion}")
+	compile("io.springfox:springfox-swagger-ui:${springFoxVersion}")
+
+	compile 'io.jsonwebtoken:jjwt:0.9.0'
+
+	testCompile('org.springframework.boot:spring-boot-starter-test')
+	testCompile('org.springframework.security:spring-security-test')
+}
