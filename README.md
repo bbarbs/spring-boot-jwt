@@ -27,7 +27,7 @@ public SecretKey generateKey() throws NoSuchAlgorithmException {
 * Token, SecretKey and Claims are stored in redis.
 * Roles and Privileges is prepopulated during bean creation. See: [DataInitializer.java](https://github.com/bbarbs/spring-boot-jwt/blob/master/src/main/java/com/auth/setup/DataInitializer.java)
 * For Authentication it use the spring UsernamePasswordAuthenticationFilter class which will intercept the request for login POST ("/login). See: [JwtAuthenticationFilter.java](https://github.com/bbarbs/spring-boot-jwt/blob/master/src/main/java/com/auth/core/security/JwtAuthenticationFilter.java)
-* For Authorization it use also the spring BasicAuthenticationFilter class to authorize request. See: [JwtAuthorizationFilter.java](https://github.com/bbarbs/spring-boot-jwt/blob/master/src/main/java/com/auth/core/security/JwtAuthorizationFilter.java)
+* For Authorization it use also the spring BasicAuthenticationFilter class to filter request. See: [JwtAuthorizationFilter.java](https://github.com/bbarbs/spring-boot-jwt/blob/master/src/main/java/com/auth/core/security/JwtAuthorizationFilter.java)
 
 ### Built With
 * Spring Boot
