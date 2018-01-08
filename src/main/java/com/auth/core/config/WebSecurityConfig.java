@@ -1,5 +1,6 @@
 package com.auth.core.config;
 
+import com.auth.core.handler.HttpLogoutHandler;
 import com.auth.core.jwt.JwtHelper;
 import com.auth.core.jwt.util.JwtUtil;
 import com.auth.core.security.JwtAuthenticationFilter;
@@ -17,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -43,18 +45,26 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Inject
     JwtUtil jwtUtil;
 
+    @Inject
+    HttpLogoutHandler httpLogoutHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors().and().csrf().disable()
                 .headers().frameOptions().disable()
-                .and().authorizeRequests()
+                .and()
+                .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/users/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                // Authentication filter, this will intercept dto path for login ("/login").
+                .logout()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessHandler(httpLogoutHandler)
+                .and()
+                // Authentication filter, this will intercept request path for login ("/login").
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), tokenService, jwtHelper, jwtUtil))
                 // Authorization filter to check jwt validity.
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), userDetailsService, tokenService, jwtHelper, jwtUtil))
