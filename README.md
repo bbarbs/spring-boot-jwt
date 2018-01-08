@@ -3,7 +3,7 @@
 > Spring security using jwt https://jwt.io/
 
 ## Getting Started
-This is a sample token authentication project using JWT, it manage both the role and privilege/permission of the user.
+This is a sample token authentication project using JWT, it manage both the roles and privileges/permissions of the user.
 
 ### Feature
 * Swagger2
@@ -18,7 +18,7 @@ Since we are using redis to store token make sure to run the redis server.
 For windows you can download it [here](https://github.com/dmajkic/redis/downloads)
 
 ### How it Works
-* Every genetared token has SecretKey with is also generated using KeyGenerator.
+* Every genetared token has SecretKey with is also generated using KeyGenerator Advance Standard Encryption(AES).
 ```
 public SecretKey generateKey() throws NoSuchAlgorithmException {
      return KeyGenerator.getInstance("AES").generateKey();
