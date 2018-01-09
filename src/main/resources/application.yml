@@ -18,5 +18,9 @@ spring:
 security:
   basic:
     enabled: false
+logging:
+  level:
+    org.springframework.web: debug
+    com.auth: debug
 
 

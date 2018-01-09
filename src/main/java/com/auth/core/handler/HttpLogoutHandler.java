@@ -17,8 +17,6 @@ import java.io.IOException;
 @Component
 public class HttpLogoutHandler implements LogoutSuccessHandler {
 
-    private Logger logger = LoggerFactory.getLogger(getClass());
-
     @Inject
     TokenService tokenService;
 
@@ -27,7 +25,7 @@ public class HttpLogoutHandler implements LogoutSuccessHandler {
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
-                                Authentication authentication) throws IOException, ServletException {
+                                Authentication authentication) throws IOException {
         // Remove token in redis.
         String token = this.jwtUtil.extractToken(request);
         if (token != null) {

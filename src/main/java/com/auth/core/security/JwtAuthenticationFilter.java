@@ -23,7 +23,6 @@ import javax.servlet.FilterChain;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 
 /**
  * Customize authentication filter so we don't need to add intercept url for login in http security.
@@ -51,7 +50,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             // Map dto value.
-            AuthRequest req = getCredentials(request);
+            AuthRequest req = this.getCredentials(request);
             // Authenticate user.
             return this.authManager.authenticate(new UsernamePasswordAuthenticationToken(
                     req.getEmail(),
@@ -77,8 +76,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             this.tokenService.setKeyExpiration(model.getToken(), model.getExpDate());
             // Add token to authorization header.
             response.addHeader(JwtConstant.AUTHORIZATION_HEADER_STRING, JwtConstant.TOKEN_BEARER_PREFIX + model.getToken());
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

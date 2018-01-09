@@ -68,7 +68,7 @@ public class UserController {
         boolean isEmailExist = this.userService.isEmailAlreadyExist(dto.getEmail());
         // Check if email exist.
         if (isEmailExist) {
-            throw new EmailExistsException(dto.getEmail());
+            throw new EmailExistsException("Email " + dto.getEmail() + " already exists");
         }
         Role role = this.roleService.getRoleByType(RoleType.ROLE_ADMIN);
         UserInfo user = new UserInfo();

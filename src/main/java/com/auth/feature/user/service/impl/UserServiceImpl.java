@@ -10,6 +10,7 @@ import com.auth.feature.user.model.UserInfo;
 import com.auth.feature.user.model.dto.UserDto;
 import com.auth.feature.user.repository.UserRepository;
 import com.auth.feature.user.service.UserService;
+import io.jsonwebtoken.MissingClaimException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,7 +40,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         UserInfo user = this.userRepository.findByEmail(email);
         // Throw exception if user not found.
         if (user == null) {
-            throw new EmailNotFoundException(email);
+            throw new EmailNotFoundException("Email " + email + " not found");
         }
         return new User(user.getEmail(), user.getPassword(), user.isEnabled(),
                 true, true, true, getAuthorities(user.getRoles()));
