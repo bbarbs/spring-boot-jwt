@@ -17,6 +17,15 @@ This is a sample token authentication project using JWT, it manage both the role
 Since we are using redis to store token make sure to run the redis server.
 For windows you can download it [here](https://github.com/dmajkic/redis/downloads)
 
+### Configuration
+You can configure the jpa hibernate dll, by default it is set to "create-drop"
+```
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+```
+
 ### How it Works
 * Every genetared token has SecretKey with is also generated using KeyGenerator Advance Standard Encryption(AES).
 ```
