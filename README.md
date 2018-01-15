@@ -9,6 +9,7 @@ This is a sample token authentication project using JWT, it manage both the role
 * Swagger2
 * [jjwt](https://github.com/jwtk/jjwt)
 * [redis](https://redis.io/)
+* Spring AOP(for logging) and also using ApplicationListener for event logging.
 
 ### Prerequisites
 * redis
