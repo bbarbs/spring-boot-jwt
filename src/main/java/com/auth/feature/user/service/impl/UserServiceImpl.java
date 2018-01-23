@@ -2,15 +2,17 @@ package com.auth.feature.user.service.impl;
 
 import com.auth.core.exception.global.PatchOperationNotSupported;
 import com.auth.core.rest.patch.Patch;
-import com.auth.core.rest.patch.PatchType;
+import com.auth.core.rest.patch.PatchEnum;
 import com.auth.feature.user.exception.EmailNotFoundException;
 import com.auth.feature.user.exception.UserNotFoundException;
+import com.auth.feature.user.model.Privilege;
 import com.auth.feature.user.model.Role;
 import com.auth.feature.user.model.UserInfo;
+import com.auth.feature.user.model.dto.RoleDto;
 import com.auth.feature.user.model.dto.UserDto;
+import com.auth.feature.user.model.enums.PrivilegeEnum;
 import com.auth.feature.user.repository.UserRepository;
 import com.auth.feature.user.service.UserService;
-import io.jsonwebtoken.MissingClaimException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,7 +38,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     UserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String email) {
+    public UserDetails loadUserByUsername(String email) throws EmailNotFoundException {
         UserInfo user = this.userRepository.findByEmail(email);
         // Throw exception if user not found.
         if (user == null) {
@@ -75,7 +77,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public UserInfo updateUser(Long id, UserDto dto) {
+    public UserInfo updateUser(Long id, UserDto dto) throws UserNotFoundException {
         UserInfo user = this.userRepository.findOne(id);
         if (user == null) {
             throw new UserNotFoundException("User not found");
@@ -89,7 +91,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public void removeUserById(Long id) {
+    public void removeUserById(Long id) throws UserNotFoundException {
         UserInfo user = this.userRepository.findOne(id);
         if (user == null) {
             throw new UserNotFoundException("User not found");
@@ -103,7 +105,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public UserInfo getUserByEmail(String email) {
+    public UserInfo getUserByEmail(String email) throws UserNotFoundException {
         UserInfo user = this.userRepository.findByEmail(email);
         if (user == null) {
             throw new UserNotFoundException("User not found");
@@ -112,7 +114,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public UserInfo getUserById(Long id) {
+    public UserInfo getUserById(Long id) throws UserNotFoundException {
         UserInfo user = this.userRepository.findOne(id);
         if (user == null) {
             throw new UserNotFoundException("User not found");
@@ -121,8 +123,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public UserInfo patchUser(Long id, Patch patch) {
-        if (!patch.getPatchType().equals(PatchType.REPLACE)) {
+    public UserInfo patchUser(Long id, Patch patch) throws PatchOperationNotSupported, UserNotFoundException {
+        if (!patch.getPatchEnum().equals(PatchEnum.REPLACE)) {
             throw new PatchOperationNotSupported("Patch operation not supported");
         }
         UserInfo user = this.userRepository.findOne(id);
@@ -150,5 +152,26 @@ public class UserServiceImpl implements UserDetailsService, UserService {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public UserInfo addUserRole(Long id, RoleDto dto) throws UserNotFoundException {
+        UserInfo user = this.userRepository.findOne(id);
+        if(user == null) {
+            throw new UserNotFoundException("User not found");
+        }
+        // Add privileges.
+        List<Privilege> privileges = new ArrayList<>();
+        for(PrivilegeEnum p : dto.getPrivilegeEnums()) {
+            privileges.add(new Privilege(p));
+        }
+        // Set role.
+        Role role = new Role();
+        role.setType(dto.getRoleEnum());
+        role.setPrivileges(privileges);
+        // Update user role.
+        user.setRole(role);
+        // Update user, cascade is added in role and user to affect child entity.
+        return this.userRepository.saveAndFlush(user);
     }
 }

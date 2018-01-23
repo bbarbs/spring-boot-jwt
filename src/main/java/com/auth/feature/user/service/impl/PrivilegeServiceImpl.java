@@ -2,7 +2,7 @@ package com.auth.feature.user.service.impl;
 
 import com.auth.feature.user.exception.PrivilegeNotFoundException;
 import com.auth.feature.user.model.Privilege;
-import com.auth.feature.user.model.enums.PrivilegeType;
+import com.auth.feature.user.model.enums.PrivilegeEnum;
 import com.auth.feature.user.repository.PrivilegeRepository;
 import com.auth.feature.user.service.PrivilegeService;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public Privilege getPrivilegeByType(PrivilegeType type) {
+    public Privilege getPrivilegeByType(PrivilegeEnum type) {
         Privilege privilege = this.privilegeRepository.findByType(type);
         if (privilege == null) {
             throw new PrivilegeNotFoundException("Privilege not found");

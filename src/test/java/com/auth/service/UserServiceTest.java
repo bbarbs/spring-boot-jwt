@@ -1,7 +1,7 @@
 package com.auth.service;
 
 import com.auth.core.rest.patch.Patch;
-import com.auth.core.rest.patch.PatchType;
+import com.auth.core.rest.patch.PatchEnum;
 import com.auth.feature.user.model.UserInfo;
 import com.auth.feature.user.model.dto.UserDto;
 import com.auth.feature.user.repository.UserRepository;
@@ -97,7 +97,7 @@ public class UserServiceTest {
         given(this.userRepository.findOne(Matchers.anyLong())).willReturn(user);
         Patch patch = new Patch();
         patch.setValue("new@gmail.com");
-        patch.setPatchType(PatchType.REPLACE);
+        patch.setPatchEnum(PatchEnum.REPLACE);
         patch.setField("email");
         // Update email.
         user.setEmail(patch.getValue());

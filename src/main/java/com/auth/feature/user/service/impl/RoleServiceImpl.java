@@ -2,7 +2,7 @@ package com.auth.feature.user.service.impl;
 
 import com.auth.feature.user.exception.RoleNotFoundException;
 import com.auth.feature.user.model.Role;
-import com.auth.feature.user.model.enums.RoleType;
+import com.auth.feature.user.model.enums.RoleEnum;
 import com.auth.feature.user.repository.RoleRepository;
 import com.auth.feature.user.service.RoleService;
 import org.springframework.stereotype.Service;
@@ -28,7 +28,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public Role getRoleByType(RoleType type) {
+    public Role getRoleByType(RoleEnum type) {
         Role role = this.roleRepository.findByType(type);
         if (role == null) {
             throw new RoleNotFoundException("Role not found");

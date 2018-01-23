@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class ResponseMessage {
+public class ApiResponse {
 
     @NotNull
     private int statusCode;

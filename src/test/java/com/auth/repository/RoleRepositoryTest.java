@@ -1,7 +1,7 @@
 package com.auth.repository;
 
 import com.auth.feature.user.model.Role;
-import com.auth.feature.user.model.enums.RoleType;
+import com.auth.feature.user.model.enums.RoleEnum;
 import com.auth.feature.user.repository.RoleRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,11 +27,11 @@ public class RoleRepositoryTest {
     @Test
     public void testShouldFindRoleByType() {
         Role role = new Role();
-        role.setType(RoleType.ROLE_ADMIN);
+        role.setType(RoleEnum.ROLE_ADMIN);
         role.setUsers(new ArrayList<>());
         role.setPrivileges(new ArrayList<>());
         this.entityManager.persistAndFlush(role);
-        Role result = this.roleRepository.findByType(RoleType.ROLE_ADMIN);
+        Role result = this.roleRepository.findByType(RoleEnum.ROLE_ADMIN);
         assertThat(role.getType()).isEqualTo(result.getType());
     }
 }

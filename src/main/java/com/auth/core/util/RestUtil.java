@@ -1,6 +1,6 @@
 package com.auth.core.util;
 
-import com.auth.core.rest.response.ResponseMessage;
+import com.auth.core.rest.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -17,8 +17,8 @@ public class RestUtil {
      * @param details
      * @return
      */
-    public static ResponseMessage createApiResponse(int statusCode, HttpStatus status, List<?> details) {
-        ResponseMessage res = new ResponseMessage();
+    public static ApiResponse createApiResponse(int statusCode, HttpStatus status, List<?> details) {
+        ApiResponse res = new ApiResponse();
         res.setStatusCode(statusCode);
         res.setStatus(status);
         res.setDetails(details);

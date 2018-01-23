@@ -1,6 +1,6 @@
 package com.auth.feature.user.model.enums;
 
-public enum PrivilegeType {
+public enum PrivilegeEnum {
     READ,
     WRITE
 }

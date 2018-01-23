@@ -5,7 +5,7 @@ import com.auth.core.jwt.JwtModel;
 import com.auth.core.jwt.util.JwtConstant;
 import com.auth.core.jwt.util.JwtUtil;
 import com.auth.feature.token.service.impl.TokenServiceImpl;
-import com.auth.feature.user.model.enums.RoleType;
+import com.auth.feature.user.model.enums.RoleEnum;
 import com.auth.feature.user.service.impl.UserServiceImpl;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -62,7 +62,7 @@ public class AuthorizationTest {
         JwtModel model = this.jwtHelper.generateAccessToken(USER_EMAIL, this.jwtUtil.generateKey());
         // User details and encoded password.
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(RoleType.ROLE_ADMIN.name()));
+        authorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_ADMIN.name()));
         User user = new User(USER_EMAIL, this.passwordEncoder.encode(USER_PASS), authorities);
         // Stub user details.
         when(this.userService.loadUserByUsername(USER_EMAIL)).thenReturn(user);

@@ -2,7 +2,7 @@ package com.auth.security;
 
 import com.auth.feature.token.service.impl.TokenServiceImpl;
 import com.auth.feature.user.model.dto.AuthRequest;
-import com.auth.feature.user.model.enums.RoleType;
+import com.auth.feature.user.model.enums.RoleEnum;
 import com.auth.feature.user.service.impl.UserServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
@@ -60,8 +60,8 @@ public class AuthenticationTest {
         String payload = mapper.writeValueAsString(new AuthRequest(USER_EMAIL, USER_PASS));
         // User details and encoded password.
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(RoleType.ROLE_USER.name()));
-        authorities.add(new SimpleGrantedAuthority(RoleType.ROLE_ADMIN.name()));
+        authorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_USER.name()));
+        authorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_ADMIN.name()));
         User user = new User(USER_EMAIL, this.passwordEncoder.encode(USER_PASS), authorities);
         // Stub user details.
         given(this.userService.loadUserByUsername(USER_EMAIL)).willReturn(user);
@@ -86,8 +86,8 @@ public class AuthenticationTest {
         String payload = mapper.writeValueAsString(new AuthRequest(USER_EMAIL, USER_PASS));
         // User details and password is not encoded.
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(RoleType.ROLE_USER.name()));
-        authorities.add(new SimpleGrantedAuthority(RoleType.ROLE_ADMIN.name()));
+        authorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_USER.name()));
+        authorities.add(new SimpleGrantedAuthority(RoleEnum.ROLE_ADMIN.name()));
         User user = new User(USER_EMAIL, USER_PASS, authorities);
         // Stub user details.
         given(this.userService.loadUserByUsername(USER_EMAIL)).willReturn(user);

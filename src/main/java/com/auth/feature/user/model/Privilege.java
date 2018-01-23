@@ -1,10 +1,12 @@
 package com.auth.feature.user.model;
 
-import com.auth.feature.user.model.enums.PrivilegeType;
+import com.auth.feature.user.model.enums.PrivilegeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 public class Privilege {
@@ -14,16 +16,20 @@ public class Privilege {
     private Long id;
 
     @Enumerated(value = EnumType.STRING)
-    private PrivilegeType type;
+    private PrivilegeEnum type;
 
-    @ManyToMany(mappedBy = "privileges", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties("privileges")
-    private Collection<Role> roles;
+    @ManyToMany(mappedBy = "privileges")
+    @JsonIgnoreProperties("privileges") // Ignore the fields in Role entity.
+    private List<Role> roles = new ArrayList<>();
 
     public Privilege() {
     }
 
-    public Privilege(PrivilegeType type, Collection<Role> roles) {
+    public Privilege(PrivilegeEnum type) {
+        this.type = type;
+    }
+
+    public Privilege(PrivilegeEnum type, List<Role> roles) {
         this.type = type;
         this.roles = roles;
     }
@@ -36,19 +42,19 @@ public class Privilege {
         this.id = id;
     }
 
-    public PrivilegeType getType() {
+    public PrivilegeEnum getType() {
         return type;
     }
 
-    public void setType(PrivilegeType type) {
+    public void setType(PrivilegeEnum type) {
         this.type = type;
     }
 
-    public Collection<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
     }
 }

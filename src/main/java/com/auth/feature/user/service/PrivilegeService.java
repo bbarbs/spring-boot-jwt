@@ -1,7 +1,7 @@
 package com.auth.feature.user.service;
 
 import com.auth.feature.user.model.Privilege;
-import com.auth.feature.user.model.enums.PrivilegeType;
+import com.auth.feature.user.model.enums.PrivilegeEnum;
 
 public interface PrivilegeService {
 
@@ -9,7 +9,7 @@ public interface PrivilegeService {
 
     Privilege savePrivilegeAndFlush(Privilege privilege);
 
-    Privilege getPrivilegeByType(PrivilegeType type);
+    Privilege getPrivilegeByType(PrivilegeEnum type);
 
     Privilege getPrivilegeById(Long id);
 }

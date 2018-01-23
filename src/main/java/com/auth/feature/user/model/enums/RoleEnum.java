@@ -1,6 +1,6 @@
 package com.auth.feature.user.model.enums;
 
-public enum RoleType {
+public enum RoleEnum {
     ROLE_ADMIN,
     ROLE_USER
 }

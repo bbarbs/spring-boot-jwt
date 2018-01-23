@@ -4,11 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "user_info")
-@JsonIgnoreProperties({"password"})
+@JsonIgnoreProperties({"password"}) // Ignore password field.
 public class UserInfo {
 
     @Id
@@ -28,23 +29,34 @@ public class UserInfo {
 
     private boolean enabled;
 
-    @ManyToMany
+    // When UserInfo is remove, persist, merge same also with the child entity Role.
+    @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "user_roles",
+            // The owning entity.
             joinColumns = @JoinColumn(
                     name = "user_id", referencedColumnName = "id"
             ),
+            // Non owning entity.
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"
             )
     )
-    @JsonIgnoreProperties({"users", "id"})
-    private Collection<Role> roles;
+    @JsonIgnoreProperties({"users", "id"}) // This ignore the fields in Role entity.
+    private List<Role> roles = new ArrayList<>();
 
     public UserInfo() {
     }
 
-    public UserInfo(String email, String password, String firstName, String lastName, boolean enabled, Collection<Role> roles) {
+    public UserInfo(String email, String password, String firstName, String lastName, boolean enabled) {
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.enabled = enabled;
+    }
+
+    public UserInfo(String email, String password, String firstName, String lastName, boolean enabled, List<Role> roles) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -101,11 +113,39 @@ public class UserInfo {
         this.enabled = enabled;
     }
 
-    public Collection<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public void setRoles(Collection<Role> roles) {
-        this.roles = roles;
+    public void setRoles(List<Role> roles) {
+        for (Role role : roles) {
+            setRole(role);
+        }
+    }
+
+    public void removeRoles(List<Role> roles) {
+        for (Role role : roles) {
+            removeRole(role);
+        }
+    }
+
+    /**
+     * Add user and also to child entity role.
+     *
+     * @param role
+     */
+    public void setRole(Role role) {
+        this.roles.add(role);
+        role.getUsers().add(this);
+    }
+
+    /**
+     * Remove user and also to child entity role.
+     *
+     * @param role
+     */
+    public void removeRole(Role role) {
+        this.roles.remove(role);
+        role.getUsers().remove(role);
     }
 }

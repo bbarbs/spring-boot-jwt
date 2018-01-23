@@ -1,10 +1,11 @@
 package com.auth.feature.user.model;
 
-import com.auth.feature.user.model.enums.RoleType;
+import com.auth.feature.user.model.enums.RoleEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Role {
@@ -14,29 +15,36 @@ public class Role {
     private Long id;
 
     @Enumerated(value = EnumType.STRING)
-    private RoleType type;
+    private RoleEnum type;
 
     @ManyToMany(mappedBy = "roles")
-    @JsonIgnoreProperties("roles")
-    private Collection<UserInfo> users;
+    @JsonIgnoreProperties("roles") // Ignore the fields in UserInfo entity.
+    private List<UserInfo> users = new ArrayList<>();
 
-    @ManyToMany
+    // When Role is remove, persisted, merge so is the child entity also Privilege.
+    @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "roles_privileges",
+            // The owning entity.
             joinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"
             ),
+            // The non owning entity.
             inverseJoinColumns = @JoinColumn(
                     name = "privilege_id", referencedColumnName = "id"
             )
     )
-    @JsonIgnoreProperties({"roles", "id"})
-    private Collection<Privilege> privileges;
+    @JsonIgnoreProperties({"roles", "id"}) // This ignore the fields in the Privilege entity.
+    private List<Privilege> privileges = new ArrayList<>();
 
     public Role() {
     }
 
-    public Role(RoleType type, Collection<UserInfo> users, Collection<Privilege> privileges) {
+    public Role(RoleEnum type) {
+        this.type = type;
+    }
+
+    public Role(RoleEnum type, List<UserInfo> users, List<Privilege> privileges) {
         this.type = type;
         this.users = users;
         this.privileges = privileges;
@@ -50,27 +58,55 @@ public class Role {
         this.id = id;
     }
 
-    public RoleType getType() {
+    public RoleEnum getType() {
         return type;
     }
 
-    public void setType(RoleType type) {
+    public void setType(RoleEnum type) {
         this.type = type;
     }
 
-    public Collection<UserInfo> getUsers() {
+    public List<UserInfo> getUsers() {
         return users;
     }
 
-    public void setUsers(Collection<UserInfo> users) {
+    public void setUsers(List<UserInfo> users) {
         this.users = users;
     }
 
-    public Collection<Privilege> getPrivileges() {
+    public List<Privilege> getPrivileges() {
         return privileges;
     }
 
-    public void setPrivileges(Collection<Privilege> privileges) {
-        this.privileges = privileges;
+    public void setPrivileges(List<Privilege> privileges) {
+        for (Privilege privilege : privileges) {
+            setPrivilege(privilege);
+        }
+    }
+
+    public void removePrivileges(List<Privilege> privileges) {
+        for (Privilege privilege : privileges) {
+            removePrivilege(privilege);
+        }
+    }
+
+    /**
+     * Add role and also to child entity privilege.
+     *
+     * @param privilege
+     */
+    public void setPrivilege(Privilege privilege) {
+        this.privileges.add(privilege);
+        privilege.getRoles().add(this);
+    }
+
+    /**
+     * Remove role and also to child entity privilege.
+     *
+     * @param privilege
+     */
+    public void removePrivilege(Privilege privilege) {
+        this.privileges.remove(privilege);
+        privilege.getRoles().remove(this);
     }
 }

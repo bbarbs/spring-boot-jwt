@@ -1,7 +1,7 @@
 package com.auth.web;
 
 import com.auth.core.rest.patch.Patch;
-import com.auth.core.rest.patch.PatchType;
+import com.auth.core.rest.patch.PatchEnum;
 import com.auth.feature.token.service.impl.TokenServiceImpl;
 import com.auth.feature.user.model.UserInfo;
 import com.auth.feature.user.model.dto.UserDto;
@@ -106,7 +106,7 @@ public class UserControllerTest {
     public void testShouldPatchUserEmail() throws Exception {
         Patch patch = new Patch();
         patch.setField("email");
-        patch.setPatchType(PatchType.REPLACE);
+        patch.setPatchEnum(PatchEnum.REPLACE);
         patch.setValue("new@gmail.com");
         UserInfo user = new UserInfo();
         user.setId(1L);

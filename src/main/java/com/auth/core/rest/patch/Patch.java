@@ -2,16 +2,16 @@ package com.auth.core.rest.patch;
 
 public class Patch {
 
-    private PatchType patchType;
+    private PatchEnum patchEnum;
     private String field;
     private String value;
 
-    public PatchType getPatchType() {
-        return patchType;
+    public PatchEnum getPatchEnum() {
+        return patchEnum;
     }
 
-    public void setPatchType(PatchType patchType) {
-        this.patchType = patchType;
+    public void setPatchEnum(PatchEnum patchEnum) {
+        this.patchEnum = patchEnum;
     }
 
     public String getField() {

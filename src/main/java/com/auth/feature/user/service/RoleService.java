@@ -1,7 +1,7 @@
 package com.auth.feature.user.service;
 
 import com.auth.feature.user.model.Role;
-import com.auth.feature.user.model.enums.RoleType;
+import com.auth.feature.user.model.enums.RoleEnum;
 
 public interface RoleService {
 
@@ -9,7 +9,7 @@ public interface RoleService {
 
     Role saveRoleAndFlush(Role role);
 
-    Role getRoleByType(RoleType type);
+    Role getRoleByType(RoleEnum type);
 
     Role getRoleById(Long id);
 }

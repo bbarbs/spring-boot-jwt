@@ -2,6 +2,7 @@ package com.auth.feature.user.service;
 
 import com.auth.core.rest.patch.Patch;
 import com.auth.feature.user.model.UserInfo;
+import com.auth.feature.user.model.dto.RoleDto;
 import com.auth.feature.user.model.dto.UserDto;
 
 import java.util.List;
@@ -25,4 +26,6 @@ public interface UserService {
     UserInfo patchUser(Long id, Patch patch);
 
     boolean isEmailAlreadyExist(String email);
+
+    UserInfo addUserRole(Long id, RoleDto dto);
 }
