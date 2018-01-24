@@ -29,7 +29,7 @@ public class JwtHelper {
             throw new NullPointerException("Error generating access token, username is null");
         }
         // Expiration.
-        Date expiration = generateTokenExp(JwtConstant.ACCESS_TOKEN_EXPIRATION, Calendar.MINUTE);
+        Date expiration = generateTokenExp(JwtConstant.ACCESS_TOKEN_EXPIRATION);
         // Issue date.
         Date current = new Date();
         // Generate token.
@@ -66,15 +66,14 @@ public class JwtHelper {
     /**
      * Expiration.
      *
-     * @param i
-     * @param c
-     * @return date
+     * @param timeExpired
+     * @return
      */
-    private Date generateTokenExp(Integer i, int c) {
+    private Date generateTokenExp(Integer timeExpired) {
         Date current = new Date();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(current);
-        calendar.add(c, i);
+        calendar.add(Calendar.MINUTE, timeExpired);
         return calendar.getTime();
     }
 }
