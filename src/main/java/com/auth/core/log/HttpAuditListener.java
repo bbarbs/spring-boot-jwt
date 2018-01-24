@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.support.ServletRequestHandledEvent;
 
 /**
- *  Listener to log every http request.
+ * Listener to log every http request.
  */
 
 @Component

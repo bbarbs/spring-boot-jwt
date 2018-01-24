@@ -157,12 +157,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public UserInfo addUserRole(Long id, RoleDto dto) throws UserNotFoundException {
         UserInfo user = this.userRepository.findOne(id);
-        if(user == null) {
+        if (user == null) {
             throw new UserNotFoundException("User not found");
         }
         // Add privileges.
         List<Privilege> privileges = new ArrayList<>();
-        for(PrivilegeEnum p : dto.getPrivilegeEnums()) {
+        for (PrivilegeEnum p : dto.getPrivilegeEnums()) {
             privileges.add(new Privilege(p));
         }
         // Set role.

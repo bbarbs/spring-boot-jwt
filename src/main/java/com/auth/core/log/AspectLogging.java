@@ -1,6 +1,5 @@
 package com.auth.core.log;
 
-import com.auth.core.jwt.JwtHelper;
 import com.auth.core.jwt.JwtModel;
 import com.auth.core.jwt.util.JwtUtil;
 import com.auth.feature.token.service.TokenService;
