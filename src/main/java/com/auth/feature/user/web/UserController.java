@@ -7,9 +7,12 @@ import com.auth.feature.user.exception.EmailExistsException;
 import com.auth.feature.user.model.UserInfo;
 import com.auth.feature.user.model.dto.UserDto;
 import com.auth.feature.user.service.UserService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -149,5 +152,21 @@ public class UserController {
         UserInfo res = this.userService.patchUser(Long.valueOf(id), patch);
         return this.restUtil.createApiResponse(HttpStatus.CREATED.value(),
                 HttpStatus.CREATED, Arrays.asList(res));
+    }
+
+    /**
+     * Get current logged user.
+     *
+     * @return
+     */
+    @ApiOperation(
+            value = "Get current logged user"
+    )
+    @GetMapping(
+            value = "/users/current",
+            produces = APPLICATION_JSON_VALUE
+    )
+    public User getCurrentLoggedUser() {
+        return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 }
