@@ -21,7 +21,6 @@ public class Role {
     @JsonIgnoreProperties("roles") // Ignore the fields in UserInfo entity.
     private List<UserInfo> users = new ArrayList<>();
 
-    // When Role is remove, persisted, merge so is the child entity also Privilege.
     @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "roles_privileges",

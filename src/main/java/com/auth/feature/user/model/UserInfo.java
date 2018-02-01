@@ -29,7 +29,6 @@ public class UserInfo {
 
     private boolean enabled;
 
-    // When UserInfo is remove, persist, merge same also with the child entity Role.
     @ManyToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "user_roles",
