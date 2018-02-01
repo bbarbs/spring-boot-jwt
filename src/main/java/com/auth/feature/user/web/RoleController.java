@@ -1,7 +1,6 @@
 package com.auth.feature.user.web;
 
 import com.auth.core.rest.response.ApiResponse;
-import com.auth.core.util.RestUtil;
 import com.auth.feature.user.model.UserInfo;
 import com.auth.feature.user.model.dto.RoleDto;
 import com.auth.feature.user.service.UserService;
@@ -22,9 +21,6 @@ public class RoleController {
     @Inject
     UserService userService;
 
-    @Inject
-    RestUtil restUtil;
-
     /**
      * Add user role.
      *
@@ -37,10 +33,11 @@ public class RoleController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
-    public ApiResponse addUserRole(@PathVariable(name = "userId") Long userId,
-                                   @RequestBody RoleDto roleDto) {
+    public ApiResponse<UserInfo> addUserRole(@PathVariable(name = "userId") Long userId,
+                                             @RequestBody RoleDto roleDto) {
         UserInfo info = this.userService.addUserRole(userId, roleDto);
-        return this.restUtil.createApiResponse(HttpStatus.CREATED.value(),
-                HttpStatus.CREATED, Arrays.asList(info));
+        return new ApiResponse<>(HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
+                Arrays.asList(info));
     }
 }

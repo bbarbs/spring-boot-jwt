@@ -2,7 +2,6 @@ package com.auth.feature.user.web;
 
 import com.auth.core.rest.patch.Patch;
 import com.auth.core.rest.response.ApiResponse;
-import com.auth.core.util.RestUtil;
 import com.auth.feature.user.exception.EmailExistsException;
 import com.auth.feature.user.model.UserInfo;
 import com.auth.feature.user.model.dto.UserDto;
@@ -32,9 +31,6 @@ public class UserController {
     @Inject
     UserService userService;
 
-    @Inject
-    RestUtil restUtil;
-
     /**
      * Get list of user.
      *
@@ -59,7 +55,7 @@ public class UserController {
             consumes = APPLICATION_JSON_VALUE,
             produces = APPLICATION_JSON_VALUE
     )
-    public ApiResponse addUser(@RequestBody UserDto dto) throws EmailExistsException {
+    public ApiResponse<UserInfo> addUser(@RequestBody UserDto dto) throws EmailExistsException {
         boolean isEmailExist = this.userService.isEmailAlreadyExist(dto.getEmail());
         // Check if email exist.
         if (isEmailExist) {
@@ -73,8 +69,9 @@ public class UserController {
         user.setEmail(dto.getEmail());
         // Save user.
         UserInfo res = this.userService.saveUserAndFlush(user);
-        return this.restUtil.createApiResponse(HttpStatus.CREATED.value(),
-                HttpStatus.CREATED, Arrays.asList(res));
+        return new ApiResponse<>(HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
+                Arrays.asList(res));
     }
 
     /**
@@ -127,10 +124,11 @@ public class UserController {
     @PreAuthorize(
             "hasRole('ROLE_ADMIN') AND hasAuthority('WRITE')"
     )
-    public ApiResponse updateUserById(@PathVariable int id, @RequestBody UserDto dto) {
+    public ApiResponse<UserInfo> updateUserById(@PathVariable int id, @RequestBody UserDto dto) {
         UserInfo res = this.userService.updateUser(Long.valueOf(id), dto);
-        return this.restUtil.createApiResponse(HttpStatus.CREATED.value(),
-                HttpStatus.CREATED, Arrays.asList(res));
+        return new ApiResponse<>(HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
+                Arrays.asList(res));
     }
 
     /**
@@ -148,10 +146,11 @@ public class UserController {
     @PreAuthorize(
             "hasRole('ROLE_ADMIN') AND hasAuthority('WRITE')"
     )
-    public ApiResponse patchUser(@PathVariable int id, @RequestBody Patch patch) {
+    public ApiResponse<UserInfo> patchUser(@PathVariable int id, @RequestBody Patch patch) {
         UserInfo res = this.userService.patchUser(Long.valueOf(id), patch);
-        return this.restUtil.createApiResponse(HttpStatus.CREATED.value(),
-                HttpStatus.CREATED, Arrays.asList(res));
+        return new ApiResponse<>(HttpStatus.CREATED.value(),
+                HttpStatus.CREATED,
+                Arrays.asList(res));
     }
 
     /**
