@@ -30,9 +30,9 @@ public class GlobalRestControllerAdvice {
     public ResponseEntity<RestExceptionMessage> patchOperationNotSupported(RestApiException e) {
         return new ResponseEntity<>(new RestExceptionMessage(
                 new Date(),
-                HttpStatus.NOT_ACCEPTABLE.value(),
-                HttpStatus.NOT_ACCEPTABLE,
+                HttpStatus.BAD_REQUEST.value(),
+                HttpStatus.BAD_REQUEST,
                 new ErrorMessage(e.getMessage())
-        ), HttpStatus.NOT_ACCEPTABLE);
+        ), HttpStatus.BAD_REQUEST);
     }
 }
