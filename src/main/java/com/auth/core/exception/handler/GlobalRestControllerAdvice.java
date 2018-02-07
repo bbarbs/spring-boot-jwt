@@ -5,6 +5,7 @@ import com.auth.core.exception.RestApiException;
 import com.auth.core.exception.RestExceptionMessage;
 import com.auth.core.exception.global.PatchOperationNotSupported;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -26,8 +27,12 @@ public class GlobalRestControllerAdvice {
      * @return
      */
     @ExceptionHandler(PatchOperationNotSupported.class)
-    public RestExceptionMessage patchOperationNotSupported(RestApiException e) {
-        return new RestExceptionMessage(new Date(), HttpStatus.NOT_ACCEPTABLE.value(),
-                HttpStatus.NOT_ACCEPTABLE, new ErrorMessage(e.getMessage()));
+    public ResponseEntity<RestExceptionMessage> patchOperationNotSupported(RestApiException e) {
+        return new ResponseEntity<>(new RestExceptionMessage(
+                new Date(),
+                HttpStatus.NOT_ACCEPTABLE.value(),
+                HttpStatus.NOT_ACCEPTABLE,
+                new ErrorMessage(e.getMessage())
+        ), HttpStatus.NOT_ACCEPTABLE);
     }
 }
