@@ -2,11 +2,11 @@ package com.auth.core.handler;
 
 import com.auth.core.jwt.util.JwtUtil;
 import com.auth.feature.token.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -14,11 +14,15 @@ import java.io.IOException;
 @Component
 public class HttpLogoutHandler implements LogoutSuccessHandler {
 
-    @Inject
-    TokenService tokenService;
+    private final TokenService tokenService;
 
-    @Inject
-    JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
+
+    @Autowired
+    public HttpLogoutHandler(TokenService tokenService, JwtUtil jwtUtil) {
+        this.tokenService = tokenService;
+        this.jwtUtil = jwtUtil;
+    }
 
     @Override
     public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,

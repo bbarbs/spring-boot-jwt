@@ -4,11 +4,11 @@ import com.auth.feature.user.model.UserInfo;
 import com.auth.feature.user.repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import javax.inject.Inject;
 import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -17,10 +17,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 public class UserRepositoryTest {
 
-    @Inject
+    @Autowired
     private TestEntityManager entityManager;
 
-    @Inject
+    @Autowired
     private UserRepository userRepository;
 
     @Test

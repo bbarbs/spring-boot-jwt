@@ -1,7 +1,6 @@
 buildscript {
     ext {
         springBootVersion = '1.5.9.RELEASE'
-        javaxInjectVersion = '1'
         jsonWebTokenVersion = '0.9.0'
         springSwagger2Version = '2.7.0'
 		springSwaggerUIVersion = '1.0.0'
@@ -35,9 +34,6 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-starter-data-redis')
     runtime('com.h2database:h2')
-
-    // Inject annotation.
-    compile("javax.inject:javax.inject:${javaxInjectVersion}")
 
     // Swagger dependencies.
 	compile("io.springfox:springfox-swagger2:${springSwagger2Version}")

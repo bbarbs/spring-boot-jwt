@@ -4,13 +4,13 @@ import com.auth.core.rest.response.ApiResponse;
 import com.auth.feature.user.model.UserInfo;
 import com.auth.feature.user.model.dto.RoleDto;
 import com.auth.feature.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.inject.Inject;
 import java.util.Arrays;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -18,8 +18,12 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 public class RoleController {
 
-    @Inject
-    UserService userService;
+    private final UserService userService;
+
+    @Autowired
+    public RoleController(UserService userService) {
+        this.userService = userService;
+    }
 
     /**
      * Add user role.

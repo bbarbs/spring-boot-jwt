@@ -7,6 +7,7 @@ import com.auth.feature.user.model.UserInfo;
 import com.auth.feature.user.model.dto.UserDto;
 import com.auth.feature.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +16,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,11 +25,15 @@ import static org.springframework.http.MediaType.TEXT_PLAIN_VALUE;
 @RestController
 public class UserController {
 
-    @Inject
-    BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Inject
-    UserService userService;
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService, BCryptPasswordEncoder passwordEncoder) {
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     /**
      * Get list of user.

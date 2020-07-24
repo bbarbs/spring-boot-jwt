@@ -6,6 +6,7 @@ import com.auth.core.jwt.util.JwtUtil;
 import com.auth.core.security.JwtAuthenticationFilter;
 import com.auth.core.security.JwtAuthorizationFilter;
 import com.auth.feature.token.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,30 +24,33 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import javax.inject.Inject;
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Inject
-    UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
-    @Inject
-    BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    @Inject
-    TokenService tokenService;
+    private final TokenService tokenService;
 
-    @Inject
-    JwtHelper jwtHelper;
+    private final JwtHelper jwtHelper;
 
-    @Inject
-    JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    @Inject
-    HttpLogoutHandler httpLogoutHandler;
+    private final HttpLogoutHandler httpLogoutHandler;
+
+    @Autowired
+    public WebSecurityConfig(UserDetailsService userDetailsService, BCryptPasswordEncoder passwordEncoder, TokenService tokenService,
+                             JwtHelper jwtHelper, JwtUtil jwtUtil, HttpLogoutHandler httpLogoutHandler) {
+        this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenService = tokenService;
+        this.jwtHelper = jwtHelper;
+        this.jwtUtil = jwtUtil;
+        this.httpLogoutHandler = httpLogoutHandler;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

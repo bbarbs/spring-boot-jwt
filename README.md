@@ -37,6 +37,15 @@ http://localhost:8080/users
 ```
 http://localhost:8080/users/{userId}/roles
 ```
+* Then you can check the h2 db
+```
+http://localhost:8080/h2/
+```
+* To test like adding rules through swagger api
+```
+http://localhost:8080/swagger-ui.html
+http://localhost:8080/v2/api-docs
+```
 * After that you can proceed to authentication and authorization process.
 
 ### How it Works

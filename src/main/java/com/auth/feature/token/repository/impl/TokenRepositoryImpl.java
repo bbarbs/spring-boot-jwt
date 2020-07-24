@@ -2,17 +2,21 @@ package com.auth.feature.token.repository.impl;
 
 import com.auth.core.jwt.JwtModel;
 import com.auth.feature.token.repository.TokenRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
 import java.util.Date;
 
 @Repository
 public class TokenRepositoryImpl implements TokenRepository {
 
-    @Inject
-    RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
+
+    @Autowired
+    public TokenRepositoryImpl(RedisTemplate<String, Object> redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
 
     @Override
     public void setSecretKey(String key, JwtModel model) {

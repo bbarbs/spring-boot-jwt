@@ -8,9 +8,9 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
@@ -22,11 +22,15 @@ import java.util.Date;
 @Aspect
 public class AspectLogging {
 
-    @Inject
-    JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
-    @Inject
-    TokenService tokenService;
+    private final TokenService tokenService;
+
+    @Autowired
+    public AspectLogging(JwtUtil jwtUtil, TokenService tokenService) {
+        this.jwtUtil = jwtUtil;
+        this.tokenService = tokenService;
+    }
 
     /**
      * Log when user successfully authenticated.

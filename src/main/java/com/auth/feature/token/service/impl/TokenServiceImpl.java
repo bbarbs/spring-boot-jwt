@@ -4,18 +4,22 @@ import com.auth.core.jwt.JwtModel;
 import com.auth.feature.token.exception.TokenNotFoundException;
 import com.auth.feature.token.repository.TokenRepository;
 import com.auth.feature.token.service.TokenService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
 import java.util.Date;
 
 @Service
 @Transactional
 public class TokenServiceImpl implements TokenService {
 
-    @Inject
-    TokenRepository tokenRepository;
+    private final TokenRepository tokenRepository;
+
+    @Autowired
+    public TokenServiceImpl(TokenRepository tokenRepository) {
+        this.tokenRepository = tokenRepository;
+    }
 
     @Override
     public void setSecretKey(String key, JwtModel model) {
